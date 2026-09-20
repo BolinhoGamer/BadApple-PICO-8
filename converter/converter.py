@@ -9,7 +9,7 @@ if os.name == 'nt': os.system('')
 # Thread ID
 def process(tid: int):
     global completed_frames_count, active_thread_count
-    
+
     idx = tid
     skip = round(30 / FPS)
 
@@ -17,11 +17,11 @@ def process(tid: int):
         # Resizes the frame
         frame = Image.open(f'unprocessed_frames/{frames_name[floor(idx * skip)]}')
         w, h = frame.size
-        
+
         factor = TARG_WIDTH / w
         w = floor(w * factor)
         h = floor(h * factor)
-        
+
         frame = frame.resize((w, h))
         frame.convert('RGB')
 
@@ -29,11 +29,11 @@ def process(tid: int):
         # Process current frame
         for y in range(h):
             out.append(line := [])
-            
+
             for x in range(w):
                 pixel = frame.getpixel((x, y))[0] / 255
                 line.append(1 if pixel > 0.5 else 0)
-        
+
 
         converted_frames[floor(idx)] = out
         idx += 10
@@ -48,11 +48,11 @@ def convert():
         except KeyError: continue
 
         tile_frames.append(converted_frame := [])
-        
+
         for y, line in enumerate(frame):
             converted_frame.append(out := [])
 
-            for x, pixel_tl in enumerate(line):
+            for x, pixel in enumerate(line):
                 tile = pixel
                 if tile > 1: print(tile)
 
@@ -61,7 +61,7 @@ def convert():
 
 def compress():
     print(len(tile_frames[0][0])*len(tile_frames[0]))
-    
+
     for frame in tile_frames:
         compressed_frames.append(compressed_frame := [])
 
@@ -112,7 +112,7 @@ while active_thread_count > 0:
     print(u'\u001b[1A', end='')
 
 print('\n\nConverting to tiles...')
-converter()
+convert()
 
 print('Compressing...')
 compress()
