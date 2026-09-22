@@ -5,7 +5,7 @@ dont_update = 0
 
 function _update60()
     if skip == 0 then
-        skip = 16
+        skip = 15
         frame_idx += 1
         if dont_update > 0 then
             dont_update -= 1
